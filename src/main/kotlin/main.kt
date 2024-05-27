@@ -1,29 +1,28 @@
 fun main() {
-
-    var array = arrayListOf(2,10,2,8,3,0,1,5,3,8,7);// 1, 5, 2, 7, 93, 8, 9, 3 // 1,10,2,8,3,4,11,7 // 7,8,1,3,10,6,3,5,1
-    array = sadArrayToHappy(array);
+    //val array = arrayListOf(1, 2, 2, 9, 93, 2, 6, 8, 6, 12);//1, 2, 2, 2, 6, 8, 6, 12
+    //val array = arrayListOf(20, 16, 19, 1, 16, 3, 1, 14, 9, 14, 19);//20, 16, 1, 1, 9, 14, 19
+    //val array = arrayListOf(3, 24, 17, 29, 8, 15, 10, 13, 11, 26, 4);//3, 8, 15, 10, 13, 11, 4
+    val array = arrayListOf(22, 22, 8, 1, 2, 18, 9, 30, 12, 2, 25);//22, 22, 8, 1, 2, 2, 25
+    sadArrayToHappy(array);
     println(array)
 }
 
 fun sadArrayToHappy(oldArray: ArrayList<Int>, index: Int = 1): ArrayList<Int> {
     var array = oldArray
 
-    if (index != 0 && index != array.lastIndex) {
-        if (array[index] > (array[index - 1] + array[index + 1])) {
-            array.removeAt(index)//.toTypedArray()
-            array = sadArrayToHappy(array, index-1)
+    when(index){
+        in 1 until array.lastIndex ->{
+            if (array.isElementSad(index)) {
+                array.removeAt(index)
+                array = sadArrayToHappy(array, index-1)
+            }else array = sadArrayToHappy(array, index+1)
         }
-        else array = sadArrayToHappy(array, index+1)
-    }else if(index == 0){
-        if (array[index] > array[index + 1]) {
-            array.removeAt(index)//.toTypedArray()
-        }
-        else array = sadArrayToHappy(array, index+1)
-    }else{
-        if (array[index] > array[index - 1]) {
-            array.removeAt(index)//.toTypedArray()
-        }
+        0 -> array = sadArrayToHappy(array, index+1)
     }
 
     return array
+}
+
+fun ArrayList<Int>.isElementSad(index: Int): Boolean{
+    return this[index] > (this[index - 1] + this[index + 1])
 }
